@@ -9,12 +9,14 @@ const Movies = (props) => {
   // otherwise, pass each movie to MovieEntry component
   return (
     <ul>
-    {props.movies.map(movie => (
-      <MovieEntry
-        key={movie.title}
-        movie={movie}
-      />))}
-  </ul>
+      {props.movies.map(movie => (
+        <MovieEntry
+          updateWatched={props.updateWatched}
+          key={movie.id}
+          movie={movie}
+        />
+      ))}
+    </ul>
   )
 }
 

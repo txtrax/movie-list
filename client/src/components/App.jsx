@@ -16,21 +16,61 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      movies: movieList,
+      movies: [],
       search: null
     }
     this.updateSearch = this.updateSearch.bind(this);
+    // somehow filterMovies work without binding
     this.addMovie = this.addMovie.bind(this);
+    this.updateWatched = this.updateWatched.bind(this);
+  }
+
+  componentDidMount() {
+    let newList = [];
+
+    movieList.forEach((movie, index) => {
+      const id = index + 1;
+      movie.id = id;
+      movie.watched = false;
+      newList.push(movie);
+    })
+    this.setState({movies: newList});
+  }
+
+  // input: unique id to grab correct movie
+  // output: update watch status
+  updateWatched(id) {
+    for (let i = 0; i < this.state.movies.length; i++) {
+      const currentMovie = this.state.movies[i];
+      if (currentMovie.id === id) {
+        // switch value
+        currentMovie.watched = !currentMovie.watched;
+        // make a copy
+        let updatedList = this.state.movies.slice();
+        // update the value in movie
+        updatedList[i] = currentMovie;
+        // update state
+        this.setState({movies: updatedList});
+      }
+    }
   }
 
   // input movie
   // output: none, but updates state
-  addMovie(movie) {
+  addMovie(title) {
     let { movies } = this.state;
-
+    // give each movie and id starting at 1
+    const id = this.state.movies.length + 1;
+    // keep track of watched status
+    let movie = {
+      id: id,
+      title: title,
+      watched: false
+    }
     movies.push(movie);
-
-    this.setState({movie: movies});
+    // update the state
+    this.setState({movies: movies});
+    // this.setState({movies: [...this.state.movies, {title: movie}]})
   }
 
   updateSearch(search) {
@@ -50,17 +90,18 @@ class App extends React.Component {
         return false;
       })
     }
-    //otherwise return all movies
+    //otherwise, return all movies
     return movies;
   }
 
   render() {
+    console.log(this.state.movies);
     return (
       <div>
         <h1>Movie List</h1>
         <Search updateSearch={this.updateSearch}/>
         <AddMovie addMovies={this.addMovie}/>
-        <Movies movies={this.filterMovies()} />
+        <Movies movies={this.filterMovies()} updateWatched={this.updateWatched}/>
       </div>
     )
   }
