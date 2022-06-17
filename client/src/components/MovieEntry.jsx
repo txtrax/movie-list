@@ -1,5 +1,6 @@
 import React from 'react';
 
+// deconstructed props
 const MovieEntry = ({ movie, updateWatched }) => {
   if (movie.watched) {
     return (

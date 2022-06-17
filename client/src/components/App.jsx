@@ -17,12 +17,15 @@ class App extends React.Component {
 
     this.state = {
       movies: [],
-      search: null
+      search: null,
+      watched: false,
+      toWatch: false
     }
     this.updateSearch = this.updateSearch.bind(this);
-    // somehow filterMovies work without binding
+    // Q: somehow filterMovies work without binding
     this.addMovie = this.addMovie.bind(this);
     this.updateWatched = this.updateWatched.bind(this);
+    this.filterWatchStatus = this.filterWatchStatus.bind(this);
   }
 
   componentDidMount() {
@@ -37,8 +40,21 @@ class App extends React.Component {
     this.setState({movies: newList});
   }
 
+  // input is string of watched/toWatch
+  // update watch and toWatch states
+  filterWatchStatus(status) {
+    console.log('inside filterWatchStatus on line 46')
+    if (status === 'watched') {
+      let toggle = !this.state.watched;
+      this.setState({watched: toggle});
+    } else {
+      let toggle = !this.state.toWatch;
+      this.setState({toWatch: toggle});
+    }
+  }
+
   // input: unique id to grab correct movie
-  // output: update watch status
+  // output: update watch status of props
   updateWatched(id) {
     for (let i = 0; i < this.state.movies.length; i++) {
       const currentMovie = this.state.movies[i];
@@ -58,7 +74,6 @@ class App extends React.Component {
   // input movie
   // output: none, but updates state
   addMovie(title) {
-    let { movies } = this.state;
     // give each movie and id starting at 1
     const id = this.state.movies.length + 1;
     // keep track of watched status
@@ -67,13 +82,12 @@ class App extends React.Component {
       title: title,
       watched: false
     }
-    movies.push(movie);
     // update the state
-    this.setState({movies: movies});
-    // this.setState({movies: [...this.state.movies, {title: movie}]})
+    this.setState({movies: [...this.state.movies, movie]});
   }
 
   updateSearch(search) {
+    // anonymous function is not needed because no parameters???
     this.setState({search: search}, this.filterMovies);
   }
 
@@ -101,7 +115,14 @@ class App extends React.Component {
         <h1>Movie List</h1>
         <Search updateSearch={this.updateSearch}/>
         <AddMovie addMovies={this.addMovie}/>
-        <Movies movies={this.filterMovies()} updateWatched={this.updateWatched}/>
+        <button onClick={() => filterWatchStatus('watched')}>Watched</button>
+        <button onClick={() => filterWatchStatus('toWatch')}>To Watch</button>
+        <Movies
+          movies={this.filterMovies()}
+          updateWatched={this.updateWatched}
+          watched={this.state.watched}
+          toWatch={this.state.toWatch}
+        />
       </div>
     )
   }

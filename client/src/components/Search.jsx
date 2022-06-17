@@ -12,6 +12,7 @@ class Search extends Component {
   }
 
   handleChange(event) {
+    console.log(event.target);
     this.setState({query: event.target.value});
   }
 
@@ -19,7 +20,7 @@ class Search extends Component {
     event.preventDefault();
     // pass data up to parent
     this.props.updateSearch(this.state.query);
-    // reset the state
+    // reset the state and assign input value to it
     this.setState({query: ''});
   }
 

@@ -12,8 +12,8 @@ class AddMovie extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({movie: event.target.value});
-    // this.setState({[event.target.name]: event.target.value});
+    // this.setState({movie: event.target.value});
+    this.setState({[event.target.name]: event.target.value});
   }
 
   handleSubmit(event) {
