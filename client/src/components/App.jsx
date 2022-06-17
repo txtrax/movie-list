@@ -23,6 +23,7 @@ class App extends React.Component {
     }
     this.updateSearch = this.updateSearch.bind(this);
     // Q: somehow filterMovies work without binding
+    // this.filterMovies = this.filterMovies.bind(this);
     this.addMovie = this.addMovie.bind(this);
     this.updateWatched = this.updateWatched.bind(this);
     this.filterWatchStatus = this.filterWatchStatus.bind(this);
@@ -87,7 +88,9 @@ class App extends React.Component {
 
   updateSearch(search) {
     // anonymous function is not needed because no parameters???
-    this.setState({search: search}, this.filterMovies);
+    this.setState({search: search});
+    // don't need this
+    // this.setState({search: search}, this.filterMovies);
   }
 
   //have this function filter movies intos Movies component
