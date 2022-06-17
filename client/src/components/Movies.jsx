@@ -34,6 +34,7 @@ const Movies = (props) => {
       </ul>
     )
   }
+
   if (props.toWatch) {
     return (
       <ul>

@@ -43,7 +43,6 @@ class App extends React.Component {
   // input is string of watched/toWatch
   // update watch and toWatch states
   filterWatchStatus(status) {
-    console.log('inside filterWatchStatus on line 46')
     if (status === 'watched') {
       let toggle = !this.state.watched;
       this.setState({watched: toggle});
@@ -115,8 +114,8 @@ class App extends React.Component {
         <h1>Movie List</h1>
         <Search updateSearch={this.updateSearch}/>
         <AddMovie addMovies={this.addMovie}/>
-        <button onClick={() => filterWatchStatus('watched')}>Watched</button>
-        <button onClick={() => filterWatchStatus('toWatch')}>To Watch</button>
+        <button onClick={() => this.filterWatchStatus('watched')}>Watched</button>
+        <button onClick={() => this.filterWatchStatus('toWatch')}>To Watch</button>
         <Movies
           movies={this.filterMovies()}
           updateWatched={this.updateWatched}
