@@ -12,7 +12,6 @@ class Search extends Component {
   }
 
   handleChange(event) {
-    console.log(event.target);
     this.setState({query: event.target.value});
   }
 

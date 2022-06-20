@@ -1,30 +1,18 @@
 import React from 'react';
 import MovieEntry from './MovieEntry.jsx';
 
+// DRY... REFACTOR THIS MORE? IDK
 const Movies = (props) => {
-  let watchedMovies = props.movies.filter(movie => {
-    if (movie.watched) {
-      return true;
-    }
-    return false;
-  });
-
-  let toWatchMovies = props.movies.filter(movie => {
-    if (!movie.watched) {
-      return true;
-    }
-    return false;
-  });
-
   // Bonus: Handle the case of "no movie by that name found" gracefully.
   if (props.movies.length === 0) {
     return <div>No movies found</div>
   }
-  // if watched or toWatch states are true
-  if (props.watched) {
+
+  // if watched and toWatch states are true
+  if (props.watched && props.toWatch) {
     return (
       <ul>
-        {watchedMovies.map(movie => (
+        {props.movies.map(movie => (
           <MovieEntry
             updateWatched={props.updateWatched}
             key={movie.id}
@@ -33,12 +21,35 @@ const Movies = (props) => {
         ))}
       </ul>
     )
-  }
 
-  if (props.toWatch) {
+  // next two conditional statements for if watched or toWatch states are true
+  } else if (props.watched) {
     return (
       <ul>
-        {toWatchMovies.map(movie => (
+        {props.movies.filter(movie => {
+          if (movie.watched) {
+            return true;
+          }
+          return false;
+        }).map(movie => (
+          <MovieEntry
+            updateWatched={props.updateWatched}
+            key={movie.id}
+            movie={movie}
+          />
+        ))}
+      </ul>
+    )
+
+  } else if (props.toWatch) {
+    return (
+      <ul>
+        {props.movies.filter(movie => {
+          if (!movie.watched) {
+            return true;
+          }
+          return false;
+        }).map(movie => (
           <MovieEntry
             updateWatched={props.updateWatched}
             key={movie.id}

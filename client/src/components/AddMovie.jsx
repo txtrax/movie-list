@@ -13,14 +13,13 @@ class AddMovie extends Component {
 
   handleChange(event) {
     // this.setState({movie: event.target.value});
+    // GOOD PRACTICE: form name is same as state name
     this.setState({[event.target.name]: event.target.value});
   }
 
   handleSubmit(event) {
     event.preventDefault();
-
     this.props.addMovies(this.state.movie);
-
     this.setState({movie: ''});
   }
 
@@ -40,7 +39,6 @@ class AddMovie extends Component {
         <button>Add</button>
       </form>
     )
-
   }
 }
 

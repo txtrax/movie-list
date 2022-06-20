@@ -14,7 +14,6 @@ var movieList = [
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       movies: [],
       search: null,
@@ -22,16 +21,16 @@ class App extends React.Component {
       toWatch: false
     }
     this.updateSearch = this.updateSearch.bind(this);
-    // Q: somehow filterMovies work without binding
-    // this.filterMovies = this.filterMovies.bind(this);
     this.addMovie = this.addMovie.bind(this);
     this.updateWatched = this.updateWatched.bind(this);
-    this.filterWatchStatus = this.filterWatchStatus.bind(this);
+    // these methods methods being used only in this component,
+      // hence doesn't need to be binded
+    // this.filterMovies = this.filterMovies.bind(this);
+    // this.filterWatchStatus = this.filterWatchStatus.bind(this);
   }
 
   componentDidMount() {
     let newList = [];
-
     movieList.forEach((movie, index) => {
       const id = index + 1;
       movie.id = id;
@@ -44,24 +43,20 @@ class App extends React.Component {
   // input is string of watched/toWatch
   // update watch and toWatch states
   filterWatchStatus(status) {
-    if (status === 'watched') {
-      let toggle = !this.state.watched;
-      this.setState({watched: toggle});
-    } else {
-      let toggle = !this.state.toWatch;
-      this.setState({toWatch: toggle});
-    }
+    let toggle = !this.state[status];
+    this.setState({[status]: toggle});
   }
 
   // input: unique id to grab correct movie
   // output: update watch status of props
   updateWatched(id) {
+    // try to use HOF only, i.e. map
     for (let i = 0; i < this.state.movies.length; i++) {
       const currentMovie = this.state.movies[i];
       if (currentMovie.id === id) {
         // switch value
         currentMovie.watched = !currentMovie.watched;
-        // make a copy
+        // GOOD PRACTICE: don't need, make a copy
         let updatedList = this.state.movies.slice();
         // update the value in movie
         updatedList[i] = currentMovie;
@@ -88,9 +83,11 @@ class App extends React.Component {
 
   updateSearch(search) {
     // anonymous function is not needed because no parameters???
-    this.setState({search: search});
-    // don't need this
+    // this.setState({search: search}, () => this.filterMovies);
+    // don't need these either
     // this.setState({search: search}, this.filterMovies);
+    // this.setState({search: search});
+    this.setState({search});
   }
 
   //have this function filter movies intos Movies component
@@ -111,7 +108,8 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.movies);
+    // remove all console.log's before turning anything in
+    console.log('watched: ' + this.state.watched + ', toWatch: ' + this.state.toWatch);
     return (
       <div>
         <h1>Movie List</h1>
